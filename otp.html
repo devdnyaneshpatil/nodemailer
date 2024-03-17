@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="">
+        <label for="otp">Enter the otp received on your mail</label>
+        <input type="number" name="otp" id="otp" placeholder="enter otp">
+        <input type="submit" value="Submit otp">
+    </form>
+</body>
+<script>
+    let formEl = document.querySelector("form");
+    formEl.addEventListener("submit",(e)=>{
+        const receivedOtp=document.getElementById("otp").value
+        e.preventDefault()
+        const otp=Number(localStorage.getItem("otp"))
+        if(receivedOtp==otp){
+            window.location.href="./newPass.html"
+        }else{
+           alert("Wrong Otp")
+        }
+    })
+</script>
+</html>

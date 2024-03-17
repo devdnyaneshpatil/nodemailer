@@ -1,7 +1,7 @@
 const nodemailer = require("nodemailer");
 require("dotenv").config();
 
-const sendMail = async (email) => {
+const sendMail = async (email,subject,text) => {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -13,8 +13,8 @@ const sendMail = async (email) => {
   const mailOptions = {
     from: process.env.EMAIL,
     to: email,
-    subject: "Welcome to NodeJS App",
-    text: "This is an email using nodemailer in Node.js",
+    subject: subject,
+    text:text
   };
 
   try {

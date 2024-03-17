@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form action="">
+      <label for="password">Enter Your New Password</label>
+      <input type="password" name="password" id="password" />
+      <label for="confirmpass">Confirm New Password</label>
+      <input type="password" name="confirmpass" id="confirmpass" />
+      <input type="submit" value="Change Password" />
+    </form>
+  </body>
+  <script>
+    let formEl = document.querySelector("form");
+    formEl.addEventListener("submit", async (e) => {
+      e.preventDefault()
+      const password = document.getElementById("password").value;
+      const confirmPass = document.getElementById("confirmpass").value;
+      const userId = JSON.parse(localStorage.getItem("userId"));
+      if (!password || !confirmPass ) {
+        alert("fill all the fields");
+        return;
+      }
+      if (password != confirmPass) {
+        alert("Password Mismatch");
+        return;
+      }
+      const payload = {
+        newPassword: password,
+        userId,
+      };
+      console.log(payload)
+      try {
+        const response = await fetch("http://localhost:8080/users/changePass", {
+          method: "PATCH",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+        if (!response.ok) {
+          const errorMessage = `HTTP error status code ${response.status}: ${response.statusText}`;
+          throw new Error(errorMessage);
+        }
+        const data=await response.json()
+        console.log(data)
+      } catch (error) {
+        console.error("Error:", error.message);
+      }
+    });
+  </script>
+</html>

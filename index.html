@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form action="">
+      <label for="email">Email</label>
+      <input
+        type="email"
+        name="email"
+        id="email"
+        placeholder="Enter Your Email Here"
+      />
+      <input type="submit" value="Send OTP" />
+    </form>
+  </body>
+  <script>
+    let formEl = document.querySelector("form");
+    formEl.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const payload = {
+        email: document.getElementById("email").value,
+      };
+
+      try {
+        const response = await fetch("http://localhost:8080/users/forget", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+          const errorMessage = `HTTP error status code ${response.status}: ${response.statusText}`;
+          throw new Error(errorMessage);
+        }
+
+        const data = await response.json();
+        localStorage.setItem("otp",data.otp);
+        localStorage.setItem("userId",JSON.stringify(data.userId))
+        window.location.href = "./otp.html";
+      } catch (error) {
+        console.error("Error:", error.message);
+        // Handle the error gracefully (e.g., display an error message to the user)
+      }
+    });
+  </script>
+</html>
