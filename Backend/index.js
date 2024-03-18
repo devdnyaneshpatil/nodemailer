@@ -3,6 +3,7 @@ const sendMail=require("./config/mailLogic");
 const connectDB = require("./config/db");
 const cors=require("cors");
 const userRouter = require("./routes/user.routes");
+const { notFound, errorMiddleware } = require("./middlewares/error.middleware");
 require("dotenv").config()
 
 
@@ -10,17 +11,8 @@ const app = express();
 app.use(cors())
 app.use(express.json());
 app.use("/users",userRouter)
-
-
-// app.post("/register", async (req, res) => {
-//   const { email } = req.body;
-//   try {
-//     await sendMail(email,"hello there");
-//     res.status(200).json({ msg: "Registration successful. Email sent." });
-//   } catch (error) {
-//     res.status(400).json({ msg: error.message });
-//   }
-// });
+app.all("*",notFound)
+app.use(errorMiddleware)
 
 const PORT = process.env.PORT||6000;
 

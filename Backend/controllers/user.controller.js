@@ -3,6 +3,15 @@ const sendMail = require("../config/mailLogic");
 const { generateToken } = require("../config/token");
 const UserModel = require("../models/user.model");
 
+const getUsers=async(req,res)=>{
+  try {
+    const users=await UserModel.find()
+    res.status(200).json({msg:users})
+  } catch (error) {
+    res.status(500).json({msg:"Internal server Error"})
+  }
+}
+
 const register = async (req, res) => {
   const { name, email, password } = req.body;
   try {
@@ -106,4 +115,4 @@ const changePassword=async(req,res)=>{
    }
 }
 
-module.exports = { register, login,forgetPass,changePassword};
+module.exports = { register, login, forgetPass, changePassword, getUsers };
